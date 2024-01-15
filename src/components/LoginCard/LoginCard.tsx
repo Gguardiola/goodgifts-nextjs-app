@@ -38,11 +38,7 @@ function LoginCard({setToggleForm}: {setToggleForm: any}) {
                 maxAge: 48 * 60 * 60,
                 path: '/',
             });
-            setCookie('email', formData.email, {
-                secure: process.env.NODE_ENV === 'production',
-                maxAge: 48 * 60 * 60,
-                path: '/',
-            });
+            setCookie('email', formData.email)
             router.push('/feed')
             
 
