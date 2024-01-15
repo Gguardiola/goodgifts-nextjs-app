@@ -1,8 +1,8 @@
-import { SignupBody } from "@/models/user"
+import { User } from "@/models/user"
 import { APIResponse } from "@/models/apiResponse"
 import config from "../../../config"
 
-export const fetchSignup = async (formData: SignupBody) => {
+export const fetchSignup = async (formData: User) => {
   try {
     const res = await fetch(`${config.API_ENDPOINT}/auth/signup`, {
       method: 'POST',
@@ -18,7 +18,32 @@ export const fetchSignup = async (formData: SignupBody) => {
     }
 
     const data: APIResponse = await res.json();
-    console.log('Inside fetchSignup:', data); // Log data inside the fetchSignup function
+    console.log('Inside fetchSignup:', data);
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error as Error);
+    throw error;
+  }
+};
+
+export const fetchLogin = async (formData: User) => {
+  try {
+    const res = await fetch(`${config.API_ENDPOINT}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) {
+      const { message } = await res.json();
+      throw new Error(message);
+    }
+
+    const data: APIResponse = await res.json();
+    console.log('Inside fetchLogin:', data); 
 
     return data;
   } catch (error) {

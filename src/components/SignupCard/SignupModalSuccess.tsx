@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 
-function SignupModal(currentModalState: any) {
+function SignupModalSuccess(currentModalState: any) {
     const successModal = useRef<HTMLDialogElement | null>(null);
     const firstRender = useRef(true);
     useEffect(() => {
@@ -39,4 +39,4 @@ function SignupModal(currentModalState: any) {
     )
 }
 
-export default SignupModal
+export default SignupModalSuccess

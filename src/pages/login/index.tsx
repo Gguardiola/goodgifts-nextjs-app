@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import LoginCard from '../../components/LoginCard/LoginCard'
 import SignupCard from '../../components/SignupCard/SignupCard'
+import Footer from '@/components/common/Footer';
 
 const LoginPage = () => {
     const [toggleForm, setToggleForm] = useState(true);
     return (
+    <>
         <div className="hero min-h-screen bg-base-200">
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <div className="text-center lg:text-left prose">
@@ -14,6 +16,8 @@ const LoginPage = () => {
                     {toggleForm ? <LoginCard setToggleForm={setToggleForm} /> : <SignupCard setToggleForm={setToggleForm} />}              
             </div>
         </div>
+        <Footer />
+        </>
     )
 }
 

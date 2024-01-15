@@ -1,12 +1,15 @@
-import { SignupBody } from '../../models/user';
+import { User } from '../../models/user';
 import { APIResponse } from '../../models/apiResponse';
-import React, { useRef, useState, RefObject } from 'react'
+import React, { useRef, useState, RefObject, useEffect } from 'react'
 import { fetchSignup } from '@/pages/api/auth';
-import SignupModal from './SignupModal';
+import SignupModalSuccess from './SignupModalSuccess';
+import ModalError from '../common/ModalError';
 
 function SignupCard({setToggleForm} : {setToggleForm: any}) {
     const [currentModalState, setCurrentModalState] = useState(false);
-    const [formData, setFormData] = useState<SignupBody>({
+    const [currentModalStateError, setCurrentModalStateError] = useState(false);
+    const signupError = useRef('');
+    const [formData, setFormData] = useState<User>({
         email: '',
         password: '',
         username: '',
@@ -20,6 +23,12 @@ function SignupCard({setToggleForm} : {setToggleForm: any}) {
             [e.target.name]: e.target.value,
         });
     }
+
+    useEffect(() => {
+        setCurrentModalStateError(false);
+      }, [currentModalStateError]);
+
+      
     const handleFormSubmit = async (e: React.FormEvent) => {
         handleFormChanges(e);
 
@@ -27,12 +36,16 @@ function SignupCard({setToggleForm} : {setToggleForm: any}) {
             const data: APIResponse = await fetchSignup(formData);
             console.log('API response:', data.message);
             if(currentModalState === false){
-                console.log('currentModalState is false')
                 setCurrentModalState(true);
             }
 
         } catch (error) {
-            console.error('API error:', error);
+            const errorResponse = await (error as Error).message;
+            console.error('API error:', (error as Error).message);       
+            if(currentModalStateError === false){
+                signupError.current = errorResponse;
+                setCurrentModalStateError(true);               
+            }
         }
     };
      
@@ -40,7 +53,8 @@ function SignupCard({setToggleForm} : {setToggleForm: any}) {
 
     return (
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-            <SignupModal currentModalState={currentModalState}/>
+            <SignupModalSuccess currentModalState={currentModalState}/>
+            <ModalError currentModalStateError={currentModalStateError}/>
             <form onSubmit={async (e) => handleFormSubmit(e)} className="card-body prose">
                 <h1>Create account</h1>
                 <div className="form-control">
