@@ -19,7 +19,7 @@ RUN \
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
-ENV API_ENDPOINT=http://goodgifts-rest-api:5000
+ENV API_ENDPOINT=${API_ENDPOINT}
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
