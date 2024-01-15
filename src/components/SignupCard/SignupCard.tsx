@@ -1,10 +1,12 @@
-import { signupBody } from '../../models/user';
-import React, { useState } from 'react'
-import config from '../../../config'
+import { SignupBody } from '../../models/user';
+import { APIResponse } from '../../models/apiResponse';
+import React, { useRef, useState, RefObject } from 'react'
+import { fetchSignup } from '@/pages/api/auth';
+import SignupModal from './SignupModal';
 
 function SignupCard({setToggleForm} : {setToggleForm: any}) {
-
-    const [formData, setFormData] = useState<signupBody>({
+    const [currentModalState, setCurrentModalState] = useState(false);
+    const [formData, setFormData] = useState<SignupBody>({
         email: '',
         password: '',
         username: '',
@@ -14,45 +16,31 @@ function SignupCard({setToggleForm} : {setToggleForm: any}) {
     const handleFormChanges = (e: any) => {
         e.preventDefault();
         setFormData({
-          ...formData,
-          [e.target.name]: e.target.value,
+            ...formData,
+            [e.target.name]: e.target.value,
         });
-      }
-    const handleFormSubmit = (e: any) => {
-        handleFormChanges(e);
-        fetchSignup();
-    };
-
-    const fetchSignup = async () => {
-        const res = await fetch(`${config.API_ENDPOINT}/auth/signup`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: formData.email,
-                password: formData.password,
-                username: formData.username,
-                lastname: formData.lastname,
-                birthday: formData.birthday,
-            })
-        }).then(async res => {
-            if (!res.ok) {
-                const { message } = await res.json()
-                console.log(message)
-                throw new Error(message)
-            }
-        }).catch(err => {
-            console.log(err)
-        })
-
-        return res;
     }
-          
+    const handleFormSubmit = async (e: React.FormEvent) => {
+        handleFormChanges(e);
+
+        try {
+            const data: APIResponse = await fetchSignup(formData);
+            console.log('API response:', data.message);
+            if(currentModalState === false){
+                console.log('currentModalState is false')
+                setCurrentModalState(true);
+            }
+
+        } catch (error) {
+            console.error('API error:', error);
+        }
+    };
+     
     const handleToggle = () => {setToggleForm(true)}
 
     return (
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+            <SignupModal currentModalState={currentModalState}/>
             <form onSubmit={async (e) => handleFormSubmit(e)} className="card-body prose">
                 <h1>Create account</h1>
                 <div className="form-control">
@@ -91,7 +79,7 @@ function SignupCard({setToggleForm} : {setToggleForm: any}) {
                 <div className='form-control mt-6 m-auto'>
                     <button type='button' onClick={handleToggle} className="btn btn-circle btn-outline">
                         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#00991" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                     </button>
                 </div>
