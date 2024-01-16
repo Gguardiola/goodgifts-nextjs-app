@@ -5,12 +5,11 @@ import Navbar from './Navbar'
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-        <main className='mx-auto md:p-3 bg-base-200'>
+        <main className='container mx-auto md:p-3 min-h-screen'>
             <Navbar />
-            <p className='prose'>holaa</p>
             {children}
         </main>
-        <Footer />
+        {/* <Footer /> */}
         
     </>
   )
