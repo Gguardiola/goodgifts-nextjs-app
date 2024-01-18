@@ -92,6 +92,10 @@ export const addToWishlist = async (itemId: number, wishlistName: string) => {
 };
 
 export const editCurrentItem = async (itemId: number, formData: Item) => {
+  
+    if (formData.item_url === '')   delete formData.item_url;
+    if (formData.image_name === '') delete formData.image_name;
+
     try {
       const res = await fetch(`${config.API_ENDPOINT}/items/edit`, {
         method: 'PATCH',
@@ -120,4 +124,33 @@ export const editCurrentItem = async (itemId: number, formData: Item) => {
       console.error('Error fetching data:', error as Error);
       throw error;
     }
+};
+
+export const deleteCurrentItem = async (itemName: string) => {
+  try {
+    const res = await fetch(`${config.API_ENDPOINT}/items/delete`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${getCookie('token')}`,
+      },
+      body: JSON.stringify({
+          userId: getCookie("userId"),
+          item_name: itemName,
+      })
+    });
+
+    if (!res.ok) {
+      const { message } = await res.json();
+      throw new Error(message);
+    }
+
+    const data: APIResponse = await res.json();
+    console.log('Inside deleteCurrentItem:', data);
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error as Error);
+    throw error;
+  }
 };

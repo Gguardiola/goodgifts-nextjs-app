@@ -112,3 +112,33 @@ export const deleteWishlist = async (wishlistName: string) => {
       throw error;
     }
 };
+
+export const editWishlist = async (currentWishlist: string, wishlistName: string) => {
+  try {
+    const res = await fetch(`${config.API_ENDPOINT}/wishlists/edit`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${getCookie('token')}`,
+      },
+      body: JSON.stringify({
+          userId: getCookie("userId"),
+          wishlistName: currentWishlist,
+          newName: wishlistName
+      }),
+    });
+
+    if (!res.ok) {
+      const { message } = await res.json();
+      throw new Error(message);
+    }
+
+    const data: APIResponse = await res.json();
+    console.log('Inside deleteWishlist:', data);
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error as Error);
+    throw error;
+  }
+};
