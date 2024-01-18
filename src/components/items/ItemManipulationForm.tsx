@@ -159,7 +159,7 @@ function ItemManipulationForm({currentItem, editTabClosed, setEditTabClosed, tri
             <dialog id="deleteItemModal" className="modal prose max-w-none">
                     <div className="modal-box">
                         <div className='mx-auto'>
-                            <h3 className='flex justify-center'>Delete '{currentItem?.item_name}'?</h3>
+                            <h3 className='flex justify-center'>Delete "{currentItem?.item_name}"?</h3>
                             <div className=''>
                                 <div className='form-control'>
                                     <button onClick={handleDeleteItem} className="btn btn-error mt-6">Delete</button>
