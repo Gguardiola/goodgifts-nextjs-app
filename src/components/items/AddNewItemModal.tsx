@@ -70,7 +70,7 @@ function AddNewItemModal({wishlistName, setTriggerWishlistChange} : {wishlistNam
         <div className='mx-auto'>
             
             <form onSubmit={async (e) => handleFormSubmit(e)} className="card-body prose max-w-none">
-            <h2 className="card-title prose prose-xl">Add new item to "{wishlistName}"</h2>
+            <h2 className="card-title prose prose-xl">Add new item to &quot{wishlistName}&quot</h2>
                 <div className="form-control">
                     <label className="label">
                         <span className="label-text">Name</span>

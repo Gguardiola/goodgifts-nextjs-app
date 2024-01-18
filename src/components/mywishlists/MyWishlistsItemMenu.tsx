@@ -193,7 +193,7 @@ function MyWishlistsItemMenu({currentWishlist, triggerWishlistChange, setTrigger
             <dialog id="deleteWishlistModal" className="modal prose max-w-none">
                 <div className="modal-box">
                     <div className='mx-auto'>
-                        <h3 className='flex justify-center'>Delete "{currentWishlist?.wishlist_name}"?</h3>
+                        <h3 className='flex justify-center'>Delete &quot{currentWishlist?.wishlist_name}&quot?</h3>
                         <div className=''>
                             <div className='form-control'>
                                 <button onClick={handleDeleteWishlistConfirmation} className="btn btn-error mt-6">Delete</button>
