@@ -13,6 +13,13 @@ function MyWishlistsPage() {
     const [currentWishlist, setCurrentWishlist] = useState<Wishlist | null>(null)
     const [currentItem, setCurrentItem] = useState<Item | null>(null)
     const [triggerWishlistChange, setTriggerWishlistChange] = useState(false)
+    const [editTabClosed, setEditTabClosed] = useState(true)
+
+    useEffect(() => {
+        console.log("close tab triggered")
+        setCurrentItem(null);
+        setEditTabClosed(true);
+    },[editTabClosed]);
 
     return (
         <Layout>
@@ -23,12 +30,23 @@ function MyWishlistsPage() {
                     setCurrentWishlist={setCurrentWishlist} 
                     triggerWishlistChange={triggerWishlistChange}
                     setTriggerWishlistChange={setTriggerWishlistChange}
+                    setEditTabClosed={setEditTabClosed}
                 />
-                <MyWishlistsItemMenu currentWishlist={currentWishlist || null} setTriggerWishlistChange={setTriggerWishlistChange}/>
+                <MyWishlistsItemMenu currentWishlist={currentWishlist || null} 
+                triggerWishlistChange={triggerWishlistChange}
+                setTriggerWishlistChange={setTriggerWishlistChange}
+                currentItem={currentItem}
+                setCurrentItem={setCurrentItem}
+                />
                 {
-               
-                        <ItemManipulationForm />             
-                    
+                    currentItem != null && (
+                        <ItemManipulationForm currentItem={currentItem} 
+                        editTabClosed={editTabClosed}
+                        setEditTabClosed={setEditTabClosed}
+                        triggerWishlistChange={triggerWishlistChange}
+                        setTriggerWishlistChange={setTriggerWishlistChange}
+                        />             
+                    )
                 }
             </div>
             </section>

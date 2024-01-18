@@ -8,7 +8,8 @@ import { fetchWishlistItems, deleteWishlist } from '@/pages/api/wishlists';
 import AlertPrompt from '../common/AlertPrompt';
 import AddNewItemModal from '../items/AddNewItemModal';
 
-function MyWishlistsItemMenu({currentWishlist, setTriggerWishlistChange} : {currentWishlist: Wishlist | null, setTriggerWishlistChange: any}) {
+function MyWishlistsItemMenu({currentWishlist, triggerWishlistChange, setTriggerWishlistChange, currentItem, setCurrentItem} : 
+    {currentWishlist: Wishlist | null, triggerWishlistChange: boolean , setTriggerWishlistChange: any, currentItem: Item | null, setCurrentItem: any}) {
 
     const [isLoading, setIsLoading] = useState(true)
     const [APIResponseMessage, setAPIResponseMessage] = useState({success: false, message: '', date: new Date()})
@@ -17,7 +18,7 @@ function MyWishlistsItemMenu({currentWishlist, setTriggerWishlistChange} : {curr
 
     useEffect(() => {
         retrieveWishlistItems(currentWishlist?.wishlist_name || 'My wishlist')
-      }, [currentWishlist])
+      }, [currentWishlist, triggerWishlistChange])
       
     useEffect(() => {
         //CALL A RERENDER FOR ALERT PROMPT
@@ -91,7 +92,7 @@ function MyWishlistsItemMenu({currentWishlist, setTriggerWishlistChange} : {curr
             <div className='md:flex justify-between'>
                 <div className='pr-5 pl-5 pt-5'>
                     <div className='flex gap-3'>
-                        <h2 className='prose text-2xl font-bold'>{currentWishlist?.wishlist_name || "My wishlist"}</h2>
+                        <h2 className='prose text-2xl font-bold overflow-y-auto lg:w-48 lg:max-w-25'>{currentWishlist?.wishlist_name || "My wishlist"}</h2>
 
                         {currentWishlist?.wishlist_name != 'My wishlist' && 
                             (
@@ -142,15 +143,11 @@ function MyWishlistsItemMenu({currentWishlist, setTriggerWishlistChange} : {curr
 
                 {
                     (!isLoading && wishlistItems.length > 0) && (
-                        <ul className="menu w-auto">
-                            {
-                                wishlistItems.map((item) => (
-                                    <li key={item.id}>
-                                        <ItemCard item={item} />
-                                    </li>
-                                ))
-                            }
-                        </ul>
+                        wishlistItems.map((item) => (
+                            <span key={item.id}>
+                                <ItemCard item={item} currentItem={currentItem} setCurrentItem={setCurrentItem}/>
+                            </span>
+                        ))
                     )   
                 }
                 </div>

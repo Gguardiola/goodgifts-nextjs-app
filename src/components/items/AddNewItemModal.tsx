@@ -1,6 +1,6 @@
 import { APIResponse } from '@/models/apiResponse';
 import { Item } from '@/models/items';
-import { addNewItem } from '@/pages/api/items';
+import { addNewItem, addToWishlist, fetchUserItem } from '@/pages/api/items';
 import React, { useState } from 'react'
 
 function AddNewItemModal({wishlistName, setTriggerWishlistChange} : {wishlistName: string, setTriggerWishlistChange: any}) {
@@ -24,7 +24,19 @@ function AddNewItemModal({wishlistName, setTriggerWishlistChange} : {wishlistNam
         try {
             const data: APIResponse = await addNewItem(formData);
             console.log('API response:', data.message);
-            setTriggerWishlistChange(true);
+            const data_item: APIResponse = await fetchUserItem(formData.item_name);
+            console.log('API response:', data_item.item?.id);
+            if(data_item.item?.id != null){
+                const data_itemToWishlist: APIResponse = await addToWishlist(data_item.item?.id, wishlistName);
+                console.log('API response:', data_itemToWishlist.message);
+                setTriggerWishlistChange(true);
+                const form = e.target as HTMLFormElement;
+                for (const element of form.elements as any) {
+                    element.value = '';
+                }
+                handleCloseModal()
+    
+            }
 
         } catch (error) {
             const errorResponse = await (error as Error).message;
@@ -77,7 +89,7 @@ function AddNewItemModal({wishlistName, setTriggerWishlistChange} : {wishlistNam
                 <button type='submit' className="btn btn-primary">Create item</button>
             </div>
             <div className="form-control mt-6">
-                <button type='button' className="btn btn-outline">Cancel</button>
+                <button onClick={handleCloseModal} type='button' className="btn btn-outline">Cancel</button>
             </div>
         </form>         
       </div>

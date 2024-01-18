@@ -35,3 +35,89 @@ export const addNewItem = async (formData: Item) => {
       throw error;
     }
 };
+
+export const fetchUserItem = async (itemName: string) => {
+    try {
+      const res = await fetch(`${config.API_ENDPOINT}/items/get?userId=${getCookie('userId')}&itemName=${itemName}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${getCookie('token')}`,
+        },
+      });
+  
+      if (!res.ok) {
+        const { message } = await res.json();
+        throw new Error(message);
+      }
+  
+      const data: APIResponse = await res.json();
+      console.log('Inside fetchUserItem:', data);
+  
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error as Error);
+      throw error;
+    }
+};
+
+export const addToWishlist = async (itemId: number, wishlistName: string) => {
+    try {
+      const res = await fetch(`${config.API_ENDPOINT}/items/addToWishlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${getCookie('token')}`,
+        },
+        body: JSON.stringify({
+            userId: getCookie("userId"),
+            itemId: itemId,
+            wishlistName: wishlistName,
+        })
+      });
+  
+      if (!res.ok) {
+        const { message } = await res.json();
+        throw new Error(message);
+      }
+  
+      const data: APIResponse = await res.json();
+      console.log('Inside addToWishlist:', data);
+  
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error as Error);
+      throw error;
+    }
+};
+
+export const editCurrentItem = async (itemId: number, formData: Item) => {
+    try {
+      const res = await fetch(`${config.API_ENDPOINT}/items/edit`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${getCookie('token')}`,
+        },
+        body: JSON.stringify({
+            userId: getCookie("userId"),
+            itemId: itemId,
+            ...formData
+            ,
+        })
+      });
+  
+      if (!res.ok) {
+        const { message } = await res.json();
+        throw new Error(message);
+      }
+  
+      const data: APIResponse = await res.json();
+      console.log('Inside editCurrentItem:', data);
+  
+      return data;
+    } catch (error) {
+      console.error('Error fetching data:', error as Error);
+      throw error;
+    }
+};

@@ -5,8 +5,8 @@ import React, { use, useEffect, useRef, useState } from 'react'
 import AlertPrompt from '../common/AlertPrompt';
 
 
-function MyWishlistsMenu({currentWishlist, setCurrentWishlist, triggerWishlistChange, setTriggerWishlistChange} : 
-  {currentWishlist: Wishlist | null, setCurrentWishlist: any, triggerWishlistChange: boolean, setTriggerWishlistChange: any}) {
+function MyWishlistsMenu({currentWishlist, setCurrentWishlist, triggerWishlistChange, setTriggerWishlistChange, setEditTabClosed} : 
+  {currentWishlist: Wishlist | null, setCurrentWishlist: any, triggerWishlistChange: boolean, setTriggerWishlistChange: any, setEditTabClosed: any}) {
 
   const [isLoading, setIsLoading] = useState(true)
   const [APIResponseMessage, setAPIResponseMessage] = useState({success: false, message: '', date: new Date()})
@@ -15,7 +15,7 @@ function MyWishlistsMenu({currentWishlist, setCurrentWishlist, triggerWishlistCh
   const [firstRender, setFirstRender] = useState(true)
   useEffect(() => {
     retrieveUserWishlists()
-    setCurrentWishlist(userWishlists[0]);
+    //setCurrentWishlist(userWishlists[0]);
     setTriggerWishlistChange(false);
   }, [newWishlistName, triggerWishlistChange])
 
@@ -77,6 +77,7 @@ function MyWishlistsMenu({currentWishlist, setCurrentWishlist, triggerWishlistCh
     for (let i = 0; i < userWishlists.length; i++) {
       if(userWishlists[i].wishlist_name == wishlistName){
         setCurrentWishlist(userWishlists[i]);
+        setEditTabClosed(false);
         break;
       }
     }
@@ -135,7 +136,7 @@ function MyWishlistsMenu({currentWishlist, setCurrentWishlist, triggerWishlistCh
               <form onSubmit={async (e) => handleWishlistCreation(e)}>
                 <div className='form-control'>
                   <h3 className="font-bold text-lg">Wishlist name</h3>
-                  <input id="newWishlistName_input" minLength={5} name="newWishlistName" type="text" placeholder="My wishlist" onChange={(e) => handleFormChanges(e)} className="input input-bordered w-full prose max-w-none" required/>
+                  <input id="newWishlistName_input" minLength={5} maxLength={50} name="newWishlistName" type="text" placeholder="My wishlist" onChange={(e) => handleFormChanges(e)} className="input input-bordered w-full prose max-w-none" required/>
                 </div>
                 <div className='form-control'>
                   <button className="btn btn-primary mt-6" type='submit'>Create</button>

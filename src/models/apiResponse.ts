@@ -1,4 +1,6 @@
+import { Item } from "./items";
 import { User } from "./user";
+import { Wishlist } from "./wishlists";
 
 export type APIResponse = {
     success: boolean;
@@ -6,6 +8,7 @@ export type APIResponse = {
     token?: string;
     userId?: string;
     userProfile?: User;
-    wishlists?: Array<any>;
-    items?: Array<any>;
+    wishlists?: Array<Wishlist>;
+    items?: Array<Item>;
+    item?: Item;
 };
