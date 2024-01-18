@@ -5,9 +5,8 @@ import Layout from '@/components/common/Layout';
 
 function FeedPage() {
 
+    //TODO: handle to only call this hook once
     const {userEmail, userData} = useUserAuthentication();
-    
-
 
 
     return (

@@ -6,4 +6,6 @@ export type APIResponse = {
     token?: string;
     userId?: string;
     userProfile?: User;
+    wishlists?: Array<any>;
+    items?: Array<any>;
 };

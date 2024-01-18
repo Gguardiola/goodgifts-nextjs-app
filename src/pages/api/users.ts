@@ -45,7 +45,7 @@ export const fetchUserProfile = async (formData: User) => {
     }
 
     const data: APIResponse = await res.json();
-    console.log('Inside fetchSignup:', data);
+    console.log('Inside fetchUserProfile:', data);
 
     return data;
   } catch (error) {
