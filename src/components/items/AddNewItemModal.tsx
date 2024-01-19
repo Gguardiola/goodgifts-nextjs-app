@@ -70,18 +70,18 @@ function AddNewItemModal({wishlistName, setTriggerWishlistChange} : {wishlistNam
         <div className='mx-auto'>
             
             <form onSubmit={async (e) => handleFormSubmit(e)} className="card-body prose max-w-none">
-            <h2 className="card-title prose prose-xl">Add new item to &quot{wishlistName}&quot</h2>
+            <h2 className="card-title prose prose-xl">Add new item to &quot;{wishlistName}&quot;</h2>
                 <div className="form-control">
                     <label className="label">
                         <span className="label-text">Name</span>
                     </label>
-                    <input onChange={async (e) => handleFormChanges(e)} name='item_name' type="text" placeholder="Name" className="input input-bordered" required/>
+                    <input onChange={async (e) => handleFormChanges(e)} minLength={5} name='item_name' type="text" placeholder="Name" className="input input-bordered" required/>
                 </div>
                 <div className="form-control">
                     <label className="label">
                         <span className="label-text">Description</span>
                     </label>
-                    <input onChange={async (e) => handleFormChanges(e)} name="item_description" type="text" placeholder="Description" className="input input-bordered" required/>
+                    <input onChange={async (e) => handleFormChanges(e)} minLength={5} name="item_description" type="text" placeholder="Description" className="input input-bordered" required/>
                 </div>
                 <div className="form-control">
                     <label className="label">

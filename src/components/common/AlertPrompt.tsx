@@ -33,7 +33,7 @@ function AlertPrompt({currentMessage, date, success} : {currentMessage: string, 
     ,[date])
 
   return (
-    <div id={alertId} role="alert" className="hidden alert alert-success fixed top-[80%] left-[2%] lg:top-[90%] lg:left-[2%] max-w-sm lg:max-w-screen-sm lg:max-auto whitespace-normal overflow-auto z-50">
+    <div id={alertId} role="alert" className="hidden alert alert-success fixed top-[80%] left-[1%] md:left-[2%] lg:top-[90%] lg:left-[2%] max-w-sm lg:max-w-screen-sm lg:max-auto whitespace-normal overflow-auto z-50">
         {
             success ? (
                     <svg xmlns="http://www.w3.org/2000/svg" className=" stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>

@@ -1,8 +1,27 @@
-import React from 'react'
+import { useRouter } from 'next/router';
 import ThemeController from './ThemeController'
 import Link from 'next/link'
+import { fetchLogout } from '@/pages/api/auth';
+import { APIResponse } from '@/models/apiResponse';
+import { deleteCookie } from 'cookies-next';
 
 function Navbar() {
+    const router = useRouter();
+    const handleLogout = async () => {    
+        try {
+            const data: APIResponse = await fetchLogout();
+            console.log('API response:', data.message);
+            deleteCookie('token');
+            deleteCookie('userId');
+            deleteCookie('email');
+            deleteCookie('userProfile');
+            router.push('/login');
+        } catch (error) {
+            const errorResponse = await (error as Error).message;
+            console.error('API error:', (error as Error).message);     
+        }
+    
+    }
   return (
 
     <div className="navbar bg-base-100 shadow-xl rounded-lg md:justify-around">
@@ -41,8 +60,8 @@ function Navbar() {
                     </div>
                 </div>
                 <ul tabIndex={0} className="prose z-[1] -mt-12 p-2 shadow-lg menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                    <li><Link className='no-underline p-3' href="/profle">Profile</Link></li>
-                    <li><Link className='no-underline p-3 text-red-500' href="/login">Logout</Link></li>
+                    <li><Link className='no-underline p-3' href="/profile">Profile</Link></li>
+                    <li><span className='no-underline p-3 text-red-500 font-semibold' onClick={() => handleLogout()}>Logout</span></li>
                 </ul>
 
             </div>

@@ -50,6 +50,7 @@ function MyWishlistsItemMenu({currentWishlist, triggerWishlistChange, setTrigger
             if(wishlistName != "undefined"){
                 const data: APIResponse = await deleteWishlist(wishlistName);
                 console.log('API response:', data.message);
+                if(currentWishlist != null) currentWishlist.wishlist_name = "My wishlist" || "undefined";
                 if(data.message != null){setAPIResponseMessage({success: true, message: data.message, date: new Date()})} 
                 setTriggerWishlistChange(true);
             }
@@ -193,7 +194,7 @@ function MyWishlistsItemMenu({currentWishlist, triggerWishlistChange, setTrigger
             <dialog id="deleteWishlistModal" className="modal prose max-w-none">
                 <div className="modal-box">
                     <div className='mx-auto'>
-                        <h3 className='flex justify-center'>Delete &quot{currentWishlist?.wishlist_name}&quot?</h3>
+                        <h3 className='flex justify-center'>Delete &quot;{currentWishlist?.wishlist_name}&quot;?</h3>
                         <div className=''>
                             <div className='form-control'>
                                 <button onClick={handleDeleteWishlistConfirmation} className="btn btn-error mt-6">Delete</button>

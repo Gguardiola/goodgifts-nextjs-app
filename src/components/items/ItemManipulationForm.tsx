@@ -25,7 +25,6 @@ function ItemManipulationForm({currentItem, editTabClosed, setEditTabClosed, tri
     }, [APIResponseMessage])
     
     useEffect(() => {
-        console.log("to edit",currentItem)
         setFormData({
             item_name: currentItem?.item_name || "",
             item_description: currentItem?.item_description || "",
@@ -39,14 +38,14 @@ function ItemManipulationForm({currentItem, editTabClosed, setEditTabClosed, tri
     const handleDeleteItem = async () => {    
         try {
             if(currentItem?.id != null){
-                const data: APIResponse = await deleteCurrentItem(currentItem?.item_name);
+                const data: APIResponse = await deleteCurrentItem(formData.item_name);
                 console.log('API response:', data.message);
-                if(data.message != null){setAPIResponseMessage({success: true, message: data.message, date: new Date()})} 
+                if(data.message != null){setAPIResponseMessage({success: true, message: data.message, date: new Date()})}
                 handleCloseDeleteItemModal();
                 setTriggerWishlistChange(true);
-                handleCloseEditTab()
-                
-
+                setTimeout(() => { 
+                    handleCloseEditTab()
+                }, 2000);
             }
         } catch (error) {
             const errorResponse = await (error as Error).message;
@@ -122,13 +121,13 @@ function ItemManipulationForm({currentItem, editTabClosed, setEditTabClosed, tri
                         <label className="label">
                             <span className="label-text">Name</span>
                         </label>
-                        <input name='item_name' onChange={(e) => handleFormChanges(e)} value={formData?.item_name} type="text" placeholder="Name" className="input input-bordered" required/>
+                        <input name='item_name' minLength={5} onChange={(e) => handleFormChanges(e)} value={formData?.item_name} type="text" placeholder="Name" className="input input-bordered" required/>
                     </div>
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text">Description</span>
                         </label>
-                        <input name="item_description" onChange={(e) => handleFormChanges(e)} value={formData?.item_description} type="text" placeholder="Description" className="input input-bordered" required/>
+                        <input name="item_description" minLength={5} onChange={(e) => handleFormChanges(e)} value={formData?.item_description} type="text" placeholder="Description" className="input input-bordered" required/>
                     </div>
                     <div className="form-control">
                         <label className="label">
@@ -145,7 +144,7 @@ function ItemManipulationForm({currentItem, editTabClosed, setEditTabClosed, tri
                         <input type="file" onChange={(e) => handleFormChanges(e)} placeholder="You can't touch this" className="file-input file-input-bordered w-full max-w-xs" disabled />
                     </div>                            
                     <div className="form-control mt-6">
-                        <button type='submit' className="btn btn-primary">Confirm</button>
+                        <button type='submit' className="btn btn-primary">Update item</button>
                     </div>
                     <div className='form-control mt-6 m-auto'>
                         <button onClick={handleCloseEditTab} type='button' className="btn btn-circle btn-outline">
@@ -159,7 +158,7 @@ function ItemManipulationForm({currentItem, editTabClosed, setEditTabClosed, tri
             <dialog id="deleteItemModal" className="modal prose max-w-none">
                     <div className="modal-box">
                         <div className='mx-auto'>
-                            <h3 className='flex justify-center'>Delete &quot{currentItem?.item_name}&quot?</h3>
+                            <h3 className='flex justify-center'>Delete &quot;{formData?.item_name}&quot;?</h3>
                             <div className=''>
                                 <div className='form-control'>
                                     <button onClick={handleDeleteItem} className="btn btn-error mt-6">Delete</button>

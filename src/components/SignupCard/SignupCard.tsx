@@ -4,8 +4,11 @@ import React, { useRef, useState, RefObject, useEffect } from 'react'
 import { fetchSignup } from '@/pages/api/auth';
 import SignupModalSuccess from './SignupModalSuccess';
 import ModalError from '../common/ModalError';
+import AlertPrompt from '../common/AlertPrompt';
 
 function SignupCard({setToggleForm} : {setToggleForm: any}) {
+
+    const [APIResponseMessage, setAPIResponseMessage] = useState({success: false, message: '', date: new Date()})
     const [currentModalState, setCurrentModalState] = useState(false);
     const [currentModalStateError, setCurrentModalStateError] = useState(false);
     const signupError = useRef('');
@@ -25,6 +28,10 @@ function SignupCard({setToggleForm} : {setToggleForm: any}) {
     }
 
     useEffect(() => {
+        //CALL A RERENDER FOR ALERT PROMPT
+      }, [APIResponseMessage])
+
+    useEffect(() => {
         setCurrentModalStateError(false);
       }, [currentModalStateError]);
 
@@ -41,7 +48,8 @@ function SignupCard({setToggleForm} : {setToggleForm: any}) {
 
         } catch (error) {
             const errorResponse = await (error as Error).message;
-            console.error('API error:', (error as Error).message);       
+            console.error('API error:', (error as Error).message); 
+            if(errorResponse != null){setAPIResponseMessage({success: false, message: (error as Error).message, date: new Date()})}       
             if(currentModalStateError === false){
                 signupError.current = errorResponse;
                 setCurrentModalStateError(true);               
@@ -54,7 +62,7 @@ function SignupCard({setToggleForm} : {setToggleForm: any}) {
     return (
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <SignupModalSuccess currentModalState={currentModalState}/>
-            <ModalError currentModalStateError={currentModalStateError}/>
+            <AlertPrompt currentMessage={APIResponseMessage.message || ''} date={APIResponseMessage.date} success={APIResponseMessage.success} />
             <form onSubmit={async (e) => handleFormSubmit(e)} className="card-body prose">
                 <h1>Create account</h1>
                 <div className="form-control">

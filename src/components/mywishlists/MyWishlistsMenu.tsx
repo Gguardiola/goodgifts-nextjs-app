@@ -12,6 +12,7 @@ function MyWishlistsMenu({currentWishlist, setCurrentWishlist, triggerWishlistCh
   const [APIResponseMessage, setAPIResponseMessage] = useState({success: false, message: '', date: new Date()})
   const [userWishlists, setUserWishlists] = useState<Wishlist[]>([])
   const [newWishlistName, setNewWishlistName] = useState<string>('')
+  const [newWishlistNameLocal, setNewWishlistNameLocal] = useState<string>('')
   const [firstRender, setFirstRender] = useState(true)
   useEffect(() => {
     retrieveUserWishlists()
@@ -68,7 +69,8 @@ function MyWishlistsMenu({currentWishlist, setCurrentWishlist, triggerWishlistCh
   //WISHLSIT HANDLING
   const handleWishlistCreation = async (e: React.FormEvent) => {
     e.preventDefault();
-    confirmCreateNewWishlist(newWishlistName);
+    setNewWishlistName(newWishlistNameLocal);
+    confirmCreateNewWishlist(newWishlistNameLocal);
     handleCloseCreateWishlistModal(); 
   }
 
@@ -84,10 +86,6 @@ function MyWishlistsMenu({currentWishlist, setCurrentWishlist, triggerWishlistCh
   }
 
   //FORM AND MODAL HANDLING
-  const handleFormChanges = (e: React.FormEvent) => {
-    e.preventDefault();
-    setNewWishlistName((e.target as HTMLInputElement).value);
-  }
   const handleOpenCreateWishlistModal = () => {
     const modal = document.getElementById('createNewWishlistModal') as HTMLDialogElement;
     if (modal) {
@@ -136,7 +134,7 @@ function MyWishlistsMenu({currentWishlist, setCurrentWishlist, triggerWishlistCh
               <form onSubmit={async (e) => handleWishlistCreation(e)}>
                 <div className='form-control'>
                   <h3 className="font-bold text-lg">Wishlist name</h3>
-                  <input id="newWishlistName_input" minLength={5} maxLength={50} name="newWishlistName" type="text" placeholder="My wishlist" onChange={(e) => handleFormChanges(e)} className="input input-bordered w-full prose max-w-none" required/>
+                  <input id="newWishlistName_input" minLength={5} maxLength={50} name="newWishlistName" onChange={(e) => setNewWishlistNameLocal((e.target as HTMLInputElement).value)} type="text" placeholder="My wishlist" className="input input-bordered w-full prose max-w-none" required/>
                 </div>
                 <div className='form-control'>
                   <button className="btn btn-primary mt-6" type='submit'>Create</button>
