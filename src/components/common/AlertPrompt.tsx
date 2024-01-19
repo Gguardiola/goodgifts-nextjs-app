@@ -6,10 +6,8 @@ function AlertPrompt({currentMessage, date, success} : {currentMessage: string, 
     console.log(responseMessage)
     useEffect(() => {   
         
-        if(currentMessage.includes("object" || "error" || "unexpected" || "Too many requests" || "Internal server")){
+        if(currentMessage.includes("Failed to fetch" || "object" || "error" || "unexpected" || "Too many requests" || "Internal server")){
             console.log(currentMessage)
-            setResponseMessage("Unhandled error. Please try again.")
-        }else if(currentMessage.includes("failed to fetch")){
             setResponseMessage("An error occurred. Please try again.")
         }
         else {
