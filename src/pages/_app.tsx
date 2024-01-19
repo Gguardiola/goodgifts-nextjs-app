@@ -9,6 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>GoodGifts - Improve Your Gift-Giving Experience!</title>
+        <meta property="og:image" content="https://i.imgur.com/kXdXXMa.png" />
       </Head>
       <Component {...pageProps} />
     </>
