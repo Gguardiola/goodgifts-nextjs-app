@@ -9,6 +9,8 @@ function AlertPrompt({currentMessage, date, success} : {currentMessage: string, 
         if(currentMessage.includes("object" || "error" || "unexpected" || "Too many requests" || "Internal server")){
             console.log(currentMessage)
             setResponseMessage("Unhandled error. Please try again.")
+        }else if(currentMessage.includes("failed to fetch")){
+            setResponseMessage("An error occurred. Please try again.")
         }
         else {
             setResponseMessage(currentMessage)
