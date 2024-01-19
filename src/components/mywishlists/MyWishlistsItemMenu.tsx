@@ -70,6 +70,7 @@ function MyWishlistsItemMenu({currentWishlist, triggerWishlistChange, setTrigger
                 console.log('API response:', data.message);
                 if(currentWishlist != null) currentWishlist.wishlist_name = wishlistName || "undefined";
                 if(data.message != null){setAPIResponseMessage({success: true, message: data.message, date: new Date()})} 
+                handleCloseDeleteWishlistModal();
                 setTriggerWishlistChange(true);
             }
     
